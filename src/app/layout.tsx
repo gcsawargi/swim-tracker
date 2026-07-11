@@ -9,8 +9,9 @@ export const metadata: Metadata = {
     title: 'Swim Tracker',
     description: 'Track shared swimming pass usage for three friends.',
     icons: {
-        icon: '/favicon.ico'
-    }
+        icon: '/favicon.ico',
+        apple: "/apple-touch-icon.png",
+    },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
