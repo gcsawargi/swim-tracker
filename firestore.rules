@@ -1,0 +1,31 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAllowedMember() {
+      return isSignedIn() &&
+        request.auth.token.phone_number is string &&
+        exists(/databases/$(database)/documents/members/$(request.auth.token.phone_number));
+    }
+
+    match /members/{memberId} {
+      allow read: if isAllowedMember();
+      allow create, update, delete: if false;
+    }
+
+    match /attendanceLogs/{logId} {
+      allow read: if isAllowedMember();
+      allow create: if isAllowedMember() &&
+        request.resource.data.memberId is string &&
+        request.resource.data.memberId == request.auth.token.phone_number &&
+        exists(/databases/$(database)/documents/members/$(request.resource.data.memberId)) &&
+        request.resource.data.recordedByPhoneNumber == request.auth.token.phone_number &&
+        request.resource.data.createdAt == request.time;
+      allow update, delete: if false;
+    }
+  }
+}
