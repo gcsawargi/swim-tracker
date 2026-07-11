@@ -36,7 +36,7 @@ function formatHours(hours: number) {
 
 function formatPhoneNumber(phoneNumber: string) {
 	if (!phoneNumber) return '';
-    return phoneNumber.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+	return phoneNumber.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
 }
 
 function formatTimestamp(log: AttendanceLog) {
@@ -136,7 +136,7 @@ export default function DashboardPage() {
 			const estimatedHours = entryCount * HOURS_PER_ENTRY;
 			const remainingHours = Math.max(HOURS_PER_PERSON - estimatedHours, 0);
 			const percentUsed = Math.min((estimatedHours / HOURS_PER_PERSON) * 100, 100);
-			const accent = member.accent || ['#c80560','#146c72', '#d2793b', '#6f4bb8'][index % 3];
+			const accent = member.accent || ['#c80560', '#146c72', '#d2793b', '#6f4bb8'][index % 3];
 
 			return {
 				...member,
@@ -179,7 +179,7 @@ export default function DashboardPage() {
 	);
 	const totalEntries = logs.length;
 	const totalEstimatedHours = totalEntries * HOURS_PER_ENTRY;
-    const totalUsedHours = 365 - totalEntries;
+	const totalUsedHours = 365 - totalEntries;
 
 	async function handleLogOwnEntry() {
 		if (!currentPhoneNumber) {
@@ -244,9 +244,9 @@ export default function DashboardPage() {
 						<h1 className="section-title">{dashboardGreeting}</h1>
 						<p className="subtitle">
 							Keep track of your swim entries and remaining share.
-                        </p>    
-                        <p className="stat-label">Each swimmer gets {formatHours(HOURS_PER_PERSON)} hours from the shared {TOTAL_POOL_HOURS}-hour
-							 pass, estimated at {HOURS_PER_ENTRY} hour per logged entry.</p>
+						</p>
+						<p className="stat-label">Each swimmer gets {formatHours(HOURS_PER_PERSON)} hours from the shared {TOTAL_POOL_HOURS}-hour
+							pass, estimated at {HOURS_PER_ENTRY} hour per logged entry.</p>
 					</div>
 				</header>
 
@@ -322,106 +322,106 @@ export default function DashboardPage() {
 					</div>
 
 					<section className="card stack">
-							<div className="my-stats-head">
-								<div>
-									<h2 className="section-title">Swimmers</h2>
-									<p className="section-copy">
-										Tap a swimmer to inspect their timeline and compare usage.
-									</p>
-								</div>
+						<div className="my-stats-head">
+							<div>
+								<h2 className="section-title">Swimmers</h2>
+								<p className="section-copy">
+									Tap a swimmer to inspect their timeline and compare usage.
+								</p>
 							</div>
+						</div>
 
-							{isSwimmersLoading ? (
-								<div className="empty-state">Loading swimmers and attendance logs...</div>
-							) : null}
+						{isSwimmersLoading ? (
+							<div className="empty-state">Loading swimmers and attendance logs...</div>
+						) : null}
 
-							{!isSwimmersLoading && memberStats.length === 0 ? (
-								<div className="empty-state">
-									Add three documents to the members collection in Firestore. Use
-									each phone number in exact E.164 format as the document ID.
-								</div>
-							) : null}
+						{!isSwimmersLoading && memberStats.length === 0 ? (
+							<div className="empty-state">
+								Add three documents to the members collection in Firestore. Use
+								each phone number in exact E.164 format as the document ID.
+							</div>
+						) : null}
 
-							{!isSwimmersLoading && memberStats.length > 0 && otherMemberStats.length === 0 ? (
-								<div className="empty-state">No other swimmers available to compare yet.</div>
-							) : null}
+						{!isSwimmersLoading && memberStats.length > 0 && otherMemberStats.length === 0 ? (
+							<div className="empty-state">No other swimmers available to compare yet.</div>
+						) : null}
 
-							{!isSwimmersLoading ? (
-								<div className="swimmers-content-grid">
-									<div className="members-list">
-										{otherMemberStats.map((member) => (
-											<article
-												key={member.id}
-												className={`member-card ${member.id === selectedMemberId ? 'active' : ''}`}
-											>
-												<div className="member-head">
-													<button
-														type="button"
-														className="ghost-button"
-														style={{ padding: 0, border: 0, background: 'transparent', width: '100%' }}
-														onClick={() => setSelectedMemberId(member.id)}
-													>
-														<div className="member-meta" style={{ textAlign: 'left' }}>
-															<span
-																className="member-badge"
-																style={{ background: member.accent }}
-															>
-																{member.name.slice(0, 1).toUpperCase()}
+						{!isSwimmersLoading ? (
+							<div className="swimmers-content-grid">
+								<div className="members-list">
+									{otherMemberStats.map((member) => (
+										<article
+											key={member.id}
+											className={`member-card ${member.id === selectedMemberId ? 'active' : ''}`}
+										>
+											<div className="member-head">
+												<button
+													type="button"
+													className="ghost-button"
+													style={{ padding: 0, border: 0, background: 'transparent', width: '100%' }}
+													onClick={() => setSelectedMemberId(member.id)}
+												>
+													<div className="member-meta" style={{ textAlign: 'left' }}>
+														<span
+															className="member-badge"
+															style={{ background: member.accent }}
+														>
+															{member.name.slice(0, 1).toUpperCase()}
+														</span>
+														<span>
+															<span className="member-name">{member.name} · {formatPhoneNumber(member.phoneNumber)}</span>
+															<span className="member-subtext">
+																{member.entryCount} entries · {formatHours(member.estimatedHours)} estimated hours used
 															</span>
-															<span>
-																<span className="member-name">{member.name} · {formatPhoneNumber(member.phoneNumber)}</span>
-																<span className="member-subtext">
-																	{member.entryCount} entries · {formatHours(member.estimatedHours)} estimated hours used
-																</span>
-															</span>
+														</span>
+													</div>
+													<div className="progress">
+														<div className="progress-track">
+															<div
+																className="progress-fill"
+																style={{ width: `${member.percentUsed}%` }}
+															/>
 														</div>
-                                                        <div className="progress">
-													        <div className="progress-track">
-														    <div
-															    className="progress-fill"
-															    style={{ width: `${member.percentUsed}%` }}
-														    />
-													        </div>
-													        <div className="progress-label">
-														        <span>{formatHours(member.remainingHours)} hours left</span>
-														        <span>{Math.round(member.percentUsed)}% used</span>
-													        </div>
-												        </div>
-													</button>
-												</div>
-											</article>
-										))}
+														<div className="progress-label">
+															<span>{formatHours(member.remainingHours)} hours left</span>
+															<span>{Math.round(member.percentUsed)}% used</span>
+														</div>
+													</div>
+												</button>
+											</div>
+										</article>
+									))}
+								</div>
+
+								<aside className="timeline-pane">
+									<div>
+										<h2 className="section-title">
+											{selectedMember ? `${selectedMember.name} timeline` : 'Entry timeline'}
+										</h2>
 									</div>
 
-									<aside className="timeline-pane">
-										<div>
-											<h2 className="section-title">
-												{selectedMember ? `${selectedMember.name} timeline` : 'Entry timeline'}
-											</h2>
-										</div>
+									{selectedMember && selectedLogs.length === 0 ? (
+										<div className="empty-state">No entries logged for this swimmer yet.</div>
+									) : null}
 
-										{selectedMember && selectedLogs.length === 0 ? (
-											<div className="empty-state">No entries logged for this swimmer yet.</div>
-										) : null}
-
-										<div className="timeline-log-list">
-											<div className="log-list">
+									<div className="timeline-log-list">
+										<div className="log-list">
 											{selectedLogs.map((log) => (
 												<article key={log.id} className="log-item">
 													<span className="log-title">{formatTimestamp(log)}</span>
 													<span className="log-subtext">
-														Recorded by {selectedMember.name} ({log.recordedByPhoneNumber})
+														Recorded by {selectedMember?.name ?? "Unknown user"} ({log.recordedByPhoneNumber})
 													</span>
 												</article>
 											))}
-											</div>
 										</div>
-									</aside>
-								</div>
-							) : null}
+									</div>
+								</aside>
+							</div>
+						) : null}
 
-							{logError ? <div className="error">{logError}</div> : null}
-						</section>
+						{logError ? <div className="error">{logError}</div> : null}
+					</section>
 				</div>
 			</section>
 		</main>
