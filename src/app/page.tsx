@@ -227,7 +227,7 @@ export default function LoginPage() {
 											className="input phone-input"
 											autoComplete="tel-national"
 											inputMode="numeric"
-											placeholder="9876543210"
+											placeholder=""
 											maxLength={10}
 											value={phoneNumber}
 											onChange={(event) =>
@@ -281,7 +281,7 @@ export default function LoginPage() {
 										className="input"
 										autoComplete="one-time-code"
 										inputMode="numeric"
-										placeholder="123456"
+										placeholder=""
 										value={otpCode}
 										onChange={(event) => setOtpCode(event.target.value)}
 									/>
